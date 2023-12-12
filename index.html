@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>Google 翻译 x 次</title>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #1b1b1b;
+          color: #e7e8eb;
+        }
+        a {
+          color: #3387cc;
+        }
+        textarea,
+        button,
+        select,
+        input {
+          background-color: #3b3b3b;
+          color: #e7e8eb;
+        }
+      }
+    </style>
+  </head>
+  <body></body>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.6.nomodule.min.js"></script>
+  <script>
+    const { h1, option, select, table, tbody, td, th, tr, div, span, textarea, button, input } = van.tags;
+    const origintext = textarea({ placeholder: "请输入要翻译的内容" });
+    const mytbody = tbody(tr(th("原内容"), th("目标语言内容")), tr(td(origintext), td()));
+    const lang_selector = (default_v) => {
+      const temp = select(
+        option({ value: "sq" }, "阿尔巴尼亚语"),
+        option({ value: "ar" }, "阿拉伯语"),
+        option({ value: "am" }, "阿姆哈拉语"),
+        option({ value: "as" }, "阿萨姆语"),
+        option({ value: "az" }, "阿塞拜疆语"),
+        option({ value: "ee" }, "埃维语"),
+        option({ value: "ay" }, "艾马拉语"),
+        option({ value: "ga" }, "爱尔兰语"),
+        option({ value: "et" }, "爱沙尼亚语"),
+        option({ value: "or" }, "奥利亚语"),
+        option({ value: "om" }, "奥罗莫语"),
+        option({ value: "eu" }, "巴斯克语"),
+        option({ value: "be" }, "白俄罗斯语"),
+        option({ value: "bm" }, "班巴拉语"),
+        option({ value: "bg" }, "保加利亚语"),
+        option({ value: "is" }, "冰岛语"),
+        option({ value: "pl" }, "波兰语"),
+        option({ value: "bs" }, "波斯尼亚语"),
+        option({ value: "fa" }, "波斯语"),
+        option({ value: "bho" }, "博杰普尔语"),
+        option({ value: "af" }, "布尔语 (南非荷兰语)"),
+        option({ value: "tt" }, "鞑靼语"),
+        option({ value: "da" }, "丹麦语"),
+        option({ value: "de" }, "德语"),
+        option({ value: "dv" }, "迪维希语"),
+        option({ value: "ti" }, "蒂格尼亚语"),
+        option({ value: "doi" }, "多格来语"),
+        option({ value: "ru" }, "俄语"),
+        option({ value: "fr" }, "法语"),
+        option({ value: "sa" }, "梵语"),
+        option({ value: "tl" }, "菲律宾语"),
+        option({ value: "fi" }, "芬兰语"),
+        option({ value: "fy" }, "弗里西语"),
+        option({ value: "km" }, "高棉语"),
+        option({ value: "ka" }, "格鲁吉亚语"),
+        option({ value: "gom" }, "贡根语"),
+        option({ value: "gu" }, "古吉拉特语"),
+        option({ value: "gn" }, "瓜拉尼语"),
+        option({ value: "kk" }, "哈萨克语"),
+        option({ value: "ht" }, "海地克里奥尔语"),
+        option({ value: "ko" }, "韩语"),
+        option({ value: "ha" }, "豪萨语"),
+        option({ value: "nl" }, "荷兰语"),
+        option({ value: "ky" }, "吉尔吉斯语"),
+        option({ value: "gl" }, "加利西亚语"),
+        option({ value: "ca" }, "加泰罗尼亚语"),
+        option({ value: "cs" }, "捷克语"),
+        option({ value: "kn" }, "卡纳达语"),
+        option({ value: "co" }, "科西嘉语"),
+        option({ value: "kri" }, "克里奥尔语"),
+        option({ value: "hr" }, "克罗地亚语"),
+        option({ value: "qu" }, "克丘亚语"),
+        option({ value: "ku" }, "库尔德语（库尔曼吉语）"),
+        option({ value: "ckb" }, "库尔德语（索拉尼）"),
+        option({ value: "la" }, "拉丁语"),
+        option({ value: "lv" }, "拉脱维亚语"),
+        option({ value: "lo" }, "老挝语"),
+        option({ value: "lt" }, "立陶宛语"),
+        option({ value: "ln" }, "林格拉语"),
+        option({ value: "lg" }, "卢干达语"),
+        option({ value: "lb" }, "卢森堡语"),
+        option({ value: "rw" }, "卢旺达语"),
+        option({ value: "ro" }, "罗马尼亚语"),
+        option({ value: "mg" }, "马尔加什语"),
+        option({ value: "mt" }, "马耳他语"),
+        option({ value: "mr" }, "马拉地语"),
+        option({ value: "ml" }, "马拉雅拉姆语"),
+        option({ value: "ms" }, "马来语"),
+        option({ value: "mk" }, "马其顿语"),
+        option({ value: "mai" }, "迈蒂利语"),
+        option({ value: "mi" }, "毛利语"),
+        option({ value: "mni-Mtei" }, "梅泰语（曼尼普尔语）"),
+        option({ value: "mn" }, "蒙古语"),
+        option({ value: "bn" }, "孟加拉语"),
+        option({ value: "lus" }, "米佐语"),
+        option({ value: "my" }, "缅甸语"),
+        option({ value: "hmn" }, "苗语"),
+        option({ value: "xh" }, "南非科萨语"),
+        option({ value: "zu" }, "南非祖鲁语"),
+        option({ value: "ne" }, "尼泊尔语"),
+        option({ value: "no" }, "挪威语"),
+        option({ value: "pa" }, "旁遮普语"),
+        option({ value: "pt" }, "葡萄牙语"),
+        option({ value: "ps" }, "普什图语"),
+        option({ value: "ny" }, "齐切瓦语"),
+        option({ value: "ak" }, "契维语"),
+        option({ value: "ja" }, "日语"),
+        option({ value: "sv" }, "瑞典语"),
+        option({ value: "sm" }, "萨摩亚语"),
+        option({ value: "sr" }, "塞尔维亚语"),
+        option({ value: "nso" }, "塞佩蒂语"),
+        option({ value: "st" }, "塞索托语"),
+        option({ value: "si" }, "僧伽罗语"),
+        option({ value: "eo" }, "世界语"),
+        option({ value: "sk" }, "斯洛伐克语"),
+        option({ value: "sl" }, "斯洛文尼亚语"),
+        option({ value: "sw" }, "斯瓦希里语"),
+        option({ value: "gd" }, "苏格兰盖尔语"),
+        option({ value: "ceb" }, "宿务语"),
+        option({ value: "so" }, "索马里语"),
+        option({ value: "tg" }, "塔吉克语"),
+        option({ value: "te" }, "泰卢固语"),
+        option({ value: "ta" }, "泰米尔语"),
+        option({ value: "th" }, "泰语"),
+        option({ value: "tr" }, "土耳其语"),
+        option({ value: "tk" }, "土库曼语"),
+        option({ value: "cy" }, "威尔士语"),
+        option({ value: "ug" }, "维吾尔语"),
+        option({ value: "ur" }, "乌尔都语"),
+        option({ value: "uk" }, "乌克兰语"),
+        option({ value: "uz" }, "乌兹别克语"),
+        option({ value: "es" }, "西班牙语"),
+        option({ value: "iw" }, "希伯来语"),
+        option({ value: "el" }, "希腊语"),
+        option({ value: "haw" }, "夏威夷语"),
+        option({ value: "sd" }, "信德语"),
+        option({ value: "hu" }, "匈牙利语"),
+        option({ value: "sn" }, "修纳语"),
+        option({ value: "hy" }, "亚美尼亚语"),
+        option({ value: "ig" }, "伊博语"),
+        option({ value: "ilo" }, "伊洛卡诺语"),
+        option({ value: "it" }, "意大利语"),
+        option({ value: "yi" }, "意第绪语"),
+        option({ value: "hi" }, "印地语"),
+        option({ value: "su" }, "印尼巽他语"),
+        option({ value: "id" }, "印尼语"),
+        option({ value: "jw" }, "印尼爪哇语"),
+        option({ value: "yo" }, "约鲁巴语"),
+        option({ value: "vi" }, "越南语"),
+        option({ value: "zh-TW" }, "中文（繁体）"),
+        option({ value: "ts" }, "宗加语"),
+      );
+      switch (default_v) {
+        case "zh-CN":
+          van.add(temp, option({ value: "zh-CN", selected: "selected" }, "中文（简体）"));
+          van.add(temp, option({ value: "en" }, "英语"));
+          break;
+        case "en":
+          van.add(temp, option({ value: "zh-CN" }, "中文（简体）"));
+          van.add(temp, option({ value: "en", selected: "selected" }, "英语"));
+          break;
+      }
+      return temp;
+    };
+    const srclang = lang_selector("zh-CN");
+    const tolang = lang_selector("en");
+    const times = input({ type: "number", min: "1", max: "100", value: 10 });
+    const translate = async () => {
+      if (times.value <= 0 || times.value > 100) {
+        alert("翻译次数需要在 [1, 100] 内。");
+        return;
+      }
+      van.add(document.body, span("翻译中..."));
+      const google = async (text, src_lang, to_lang) => {
+        try {
+          const response = await fetch(
+            "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + src_lang + "&tl=" + to_lang + "&dt=t&q=" + encodeURI(text),
+          );
+          const data = await response.json();
+          return data[0].map((x) => x[0]).join("");
+        } catch (error) {
+          console.error("Translation error:", error);
+          return "Translation failed";
+        }
+      };
+      let lasttext = origintext.value;
+      for (let i = 0; i < times.value; i++) {
+        lasttext = await google(lasttext, srclang.value, tolang.value);
+        van.add(mytbody, tr(td(), td(span(lasttext))));
+        lasttext = await google(lasttext, tolang.value, srclang.value);
+        van.add(mytbody, tr(td(span(lasttext)), td()));
+      }
+      van.add(document.body, span("翻译完成"));
+    };
+    const translate_btn = button(
+      {
+        id: "translate_btn",
+        onclick: () => {
+          this.document.getElementById("translate_btn").disabled = true;
+          translate();
+        },
+      },
+      "翻译",
+    );
+    const body = () =>
+      div(h1("Google 翻译 x 次"), div(span("原语言："), srclang, " ", span("目标语言："), tolang, " ", span("翻译次数"), times), table(mytbody), translate_btn);
+    van.add(document.body, body());
+  </script>
+</html>
